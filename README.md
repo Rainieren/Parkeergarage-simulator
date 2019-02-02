@@ -1,2 +1,3 @@
-# school_parkeergaragesim
-SChool opdracht
+# Parkeergarage Simulator
+
+Een simulatie van een parkeergarage. School project
