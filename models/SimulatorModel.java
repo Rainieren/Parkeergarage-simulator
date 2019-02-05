@@ -12,9 +12,11 @@ public class SimulatorModel {
     public static final String AD_HOC = "1";
     public static final String PASS = "2";
     public static final String RES = "3";
-    public float revenue;
+    public int revenue;
+//    public float revenue;
     private float averageParkingPrice;
     private ArrayList<Float> times = new ArrayList<Float>();
+    private ArrayList<Integer> weekIncomes = new ArrayList<Integer>();
     private int[] weeklyRevenue;
     private int currentDay = 0;
     private int numberOfFloors;
@@ -22,11 +24,22 @@ public class SimulatorModel {
     private int numberOfPlaces;
     private int numberOfOpenSpots;
     private int numberOfParkedCars;
+    private int numberOfNormalParkedCars;
     private int numberOfPassCarsParked;
     private int numberReservedPlaces;
     private int numberOfCarsLeft;
+
+    //
+
+    private int numberOfVipRows;
+    private int numberOfVipFloors;
+
+    private int maxPassCar;
+    private int numberPassCar;
+
     private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
+    // private CarQueue entranceResQueue;
     private CarQueue paymentCarQueue;
     private CarQueue exitCarQueue;
     private Car[][][] cars;
@@ -35,6 +48,7 @@ public class SimulatorModel {
     public SimulatorModel(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
         entranceCarQueue = new CarQueue();
         entrancePassQueue = new CarQueue();
+        // entranceRessQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
         this.numberOfFloors = numberOfFloors;
@@ -43,12 +57,20 @@ public class SimulatorModel {
         this.numberOfOpenSpots = numberOfFloors * numberOfRows * numberOfPlaces;
         this.cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
         this.weeklyRevenue = new int[7];
+
+        // RESERVATION
+        // this.numberOfVipRows = numbersOfVipRows;
+        // this.numberOfVipFloors = numberOfVipFloors;
+
+        // this.maxPassCar = numberOfVipFloors * numberOfVipRows * numberOfPlaces;
+        // this.numberPassCar = 0;
     }
 
     public void handleEntrance(){
         carsArriving();
         carsEntering(entrancePassQueue, PASS);
         carsEntering(entranceCarQueue, AD_HOC);
+        // carsEntering(entranceResQueue, RES);
     }
 
     public void handleExit(){
@@ -57,127 +79,73 @@ public class SimulatorModel {
         carsLeaving();
     }
 
-
-
-    public static void arrivalVariation() {
+    public void arrivalVariation() {
         // schedules.
-        if (Time.getDay() >= 0 && Time.getDay() <= 4){
-            // schedule for tuesdays, every week it is "koop avond" that day. therefor it get's an exception.
-            if(Time.getDay() == 3){
-                switch (Time.getHour()) {
-                    case 8:
-                        Car.setWeekDayArrivals(300);
-                        Car.setWeekDayPassArrivals(300);
-                        break;
-                    case 9:
-                        Car.setWeekDayArrivals(Car.getWeekDayArrivals()/2);
-                        Car.setWeekDayPassArrivals(Car.getWeekDayPassArrivals()/2);
-                        break;
-                    case 12:
-                        Car.setWeekDayArrivals(Car.getWeekDayArrivals()/2);
-                        Car.setWeekDayPassArrivals(Car.getWeekDayPassArrivals()/2);
-                        break;
-                    case 13:
-                        Car.setWeekDayArrivals(Car.getWeekDayArrivals()*2);
-                        Car.setWeekDayPassArrivals(Car.getWeekDayPassArrivals()*2);
-                        break;
-                    case 17:
-                        Car.setWeekDayArrivals(Car.getWeekDayArrivals()/2);
-                        Car.setWeekDayPassArrivals(Car.getWeekDayPassArrivals()/2);
-                        break;
-                    //'koopavond' below.
-                    case 21:
-                        Car.setWeekDayArrivals(Car.getWeekDayArrivals()/2);
-                        Car.setWeekDayPassArrivals(Car.getWeekDayPassArrivals()/2);
-                        break;
-                    case 22:
-                        Car.setWeekDayArrivals(0);
-                        Car.setWeekDayPassArrivals(0);
-                        break;
-                }
-            }
-            // schedule for week days.
-            switch (Time.getHour()) {
-                case 8:
-                    Car.setWeekDayArrivals(200);
-                    Car.setWeekDayPassArrivals(300);
-                    break;
-                case 9:
-                    Car.setWeekDayArrivals(Car.getWeekDayArrivals()/2);
-                    Car.setWeekDayPassArrivals(Car.getWeekDayPassArrivals()/2);
-                    break;
-                case 12:
-                    Car.setWeekDayArrivals(Car.getWeekDayArrivals()/2);
-                    Car.setWeekDayPassArrivals(Car.getWeekDayPassArrivals()/2);
-                    break;
-                case 13:
-                    Car.setWeekDayArrivals(Car.getWeekDayArrivals()*2);
-                    Car.setWeekDayPassArrivals(Car.getWeekDayPassArrivals()*2);
-                    break;
-                case 17:
-                    Car.setWeekDayArrivals(Car.getWeekDayArrivals()/2);
-                    Car.setWeekDayPassArrivals(Car.getWeekDayPassArrivals()/2);
-                    break;
-                case 22:
-                    Car.setWeekDayArrivals(0);
-                    Car.setWeekDayPassArrivals(0);
-                    break;
-            }
-            //end of weekdays.
-            //
-            //schedule for saturday.
-            if(Time.getDay() == 5){
-                switch(Time.getHour()){
-                    case 10:
-                        Car.setWeekendArrivals(0);
-                        Car.setWeekendPassArrivals(0);
-                        break;
-                    case 13:
-                        Car.setWeekendArrivals(Car.getWeekendArrivals()*2);
-                        Car.setWeekendPassArrivals(Car.getWeekendPassArrivals()*2);
-                        break;
-                    case 17:
-                        Car.setWeekendArrivals(Car.getWeekendArrivals()/2);
-                        Car.setWeekendPassArrivals(Car.getWeekendPassArrivals()/2);
-                        break;
-                    case 22:
-                        Car.setWeekendArrivals(0);
-                        Car.setWeekendPassArrivals(0);
-                        break;
-                }
-            }
-            //end of saturday schedule.
-            //
-            //schedule for sunday.
-            if(Time.getDay() == 6){
-                switch (Time.getHour()) {
-                    case 8:
-                        Car.setWeekendArrivals(10);
-                        Car.setWeekendPassArrivals(2);
-                        break;
-                    case 12:
-                        Car.setWeekendArrivals(50);
-                        Car.setWeekendPassArrivals(5);
-                        break;
-                    case 17:
-                        Car.setWeekendArrivals(Car.getWeekendArrivals()/2);
-                        Car.setWeekendPassArrivals(Car.getWeekendPassArrivals()/2);
-                        break;
-                    case 22:
-                        Car.setWeekendArrivals(0);
-                        Car.setWeekendPassArrivals(0);
-                        break;
-                }
-            }
+
+        if(Time.getHour() >= 22 || Time.getHour() <= 7) {
+            Car.setWeekDayArrivals(25);
+            Car.setWeekDayPassArrivals(8);
+            Car.setWeekDayReservation(5);
+        } else {
+            Car.setWeekDayArrivals(60);
+            Car.setWeekDayPassArrivals(40);
+            Car.setWeekDayReservation(30);
         }
+
+        switch (Time.getDayString()) {
+            case "Maandag":
+
+                if((Time.getHour() >= 12) && (Time.getHour() <= 14)) {
+                    Car.setWeekDayArrivals(150);
+                    Car.setWeekDayPassArrivals(60);
+                    Car.setWeekDayReservation(40);
+                }
+
+                break;
+            case "Dinsdag":
+                if((Time.getHour() >= 12) && (Time.getHour() <= 14)) {
+                    Car.setWeekDayArrivals(150);
+                    Car.setWeekDayPassArrivals(60);
+                    Car.setWeekDayReservation(40);
+                }
+                break;
+            case "Woensdag":
+                if((Time.getHour() >= 12) && (Time.getHour() <= 14)) {
+                    Car.setWeekDayArrivals(150);
+                    Car.setWeekDayPassArrivals(60);
+                    Car.setWeekDayReservation(40);
+                }
+                break;
+            case "Donderdag":
+                if((Time.getHour() >= 11) && (Time.getHour() <= 18)) {
+                    Car.setWeekDayArrivals(160);
+                    Car.setWeekDayPassArrivals(70);
+                    Car.setWeekDayReservation(50);
+                }
+                break;
+            case "Vrijdag":
+                if((Time.getHour() >= 12) && (Time.getHour() <= 14)) {
+                    Car.setWeekDayArrivals(150);
+                    Car.setWeekDayPassArrivals(60);
+                    Car.setWeekDayReservation(40);
+                }
+                break;
+            case "Zaterdag":
+                Car.setWeekendArrivals(60);
+                Car.setWeekendPassArrivals(40);
+                Car.setWeekendReservation(20);
+                break;
+
+            case "Zondag":
+                Car.setWeekendArrivals(40);
+                Car.setWeekendPassArrivals(20);
+                Car.setWeekendReservation(10);
+                break;
+        }
+
     }
 
-    public static void eventMultiplier() {
-        if(Event.eventCheck()) {
-            Car.setMultiplier(2);
-        }
-        Car.setMultiplier(1);
-    }
+
 
     private void carsEntering(CarQueue queue, String type){
         int i=0;
@@ -187,16 +155,47 @@ public class SimulatorModel {
                 i < Car.getExitSpeed()) {
             Car car = queue.removeCar();
 
-            if(car.getTypeOfCar() == 2) {
-                numberOfPassCarsParked++;
-            }
-            if (car.getTypeOfCar() == 3) {
-                numberReservedPlaces++;
+            switch(car.getTypeOfCar()) {
+                case 1:
+                    numberOfNormalParkedCars++;
+                    break;
+                case 2:
+                    numberOfPassCarsParked++;
+                    break;
+                case 3:
+                    numberReservedPlaces++;
+                    break;
             }
 
             Location freeLocation = getFirstFreeLocation();
             setCarAt(freeLocation, car);
             numberOfParkedCars++;
+
+            // RESERVATION
+            /*
+            Location freeLocation;
+            switch(type) {
+                case PASS:
+                    //Antonie: Dont add another passCar if all the passCars are on the parking lot!
+                    if(numberPassCar < maxPassCar) {
+                        //A pass car has come to the parking lot
+                        numberPassCar++;
+                        freeLocation = getFirstFreeVipLocation();
+                        setCarAt(freeLocation, car);
+                    }
+                        break;
+                case RES:
+                    freeLocation = getFirstFreeLocation();
+                    setCarAt(freeLocation, car);
+                    break;
+                default:
+                    freeLocation = getFirstFreeLocation();
+                    setCarAt(freeLocation, car);
+                    break;
+            }
+
+             */
+
             i++;
         }
     }
@@ -215,7 +214,7 @@ public class SimulatorModel {
         addArrivingCars(numberOfCars, AD_HOC);
         numberOfCars = getNumberOfCars(Car.getWeekDayPassArrivals(), Car.getWeekendPassArrivals());
         addArrivingCars(numberOfCars, PASS);
-        numberOfCars = getNumberOfCars(Car.getWeekDayPassArrivals(), Car.getWeekendPassArrivals());
+        numberOfCars = getNumberOfCars(Car.getWeekDayReservation(), Car.getWeekendReservation());
         addArrivingCars(numberOfCars, RES);
     }
 
@@ -228,25 +227,19 @@ public class SimulatorModel {
                 paymentCarQueue.addCar(car);
             }
             else {
+                // numberPassCar--;
+                if(car.getTypeOfCar() == 2) {
+                    numberOfPassCarsParked--;
+                }
                 carLeavesSpot(car);
             }
             car = getFirstLeavingCar();
         }
     }
 
-    private float calcWeekyRevenue() {
-        float total = 0.0f;
-
-        for(int x = 0; x < weeklyRevenue.length; x++) {
-            total += weeklyRevenue[x];
-        }
-
-        return total;
-    }
-
     private void carsPaying() {
         // Let cars pay.
-        float total = 0.0f;
+        int amount = 0;
         int i = 0;
         while (paymentCarQueue.carsInQueue() > 0 && i < Car.getPaymentSpeed()){
             Car car = paymentCarQueue.removeCar();
@@ -260,7 +253,14 @@ public class SimulatorModel {
 
             weeklyRevenue[Time.getDay()] += payment;
 
-            revenue += payment;
+            switch(car.getTypeOfCar()) {
+                case 1:
+                    numberOfNormalParkedCars--;
+                    break;
+                case 3:
+                    numberReservedPlaces--;
+                    break;
+            }
 
             carLeavesSpot(car);
             numberOfParkedCars--;
@@ -272,8 +272,18 @@ public class SimulatorModel {
             i++;
         }
 
-        System.out.println(total);
+    }
 
+    public void addWeekIncome() {
+        if(Time.isEndOfWeek()) {
+            int total = 0;
+            for(int money : weeklyRevenue) {
+                total += money;
+            }
+            weekIncomes.add(total);
+            revenue += total;
+            System.out.println(revenue);
+        }
     }
 
     public BigDecimal getAverageTime() {
@@ -302,10 +312,6 @@ public class SimulatorModel {
         return bd;
     }
 
-//    public int getNormalCars() {
-//
-//    }
-
     private void addArrivingCars(int numberOfCars, String type){
         // Add the cars to the back of the queue.
         switch(type) {
@@ -317,13 +323,15 @@ public class SimulatorModel {
                 }
                 break;
             case PASS:
-                if(entrancePassQueue.carsInQueue()<=40) {
-                    entrancePassQueue.addCar(new ParkingPassCar());
+                for(int i = 0; i < numberOfCars; i++) {
+                    if (entrancePassQueue.carsInQueue() <= 40) {
+                        entrancePassQueue.addCar(new ParkingPassCar());
+                    }
                 }
                 break;
             case RES:
                 for(int i = 0; i < numberOfCars; i++) {
-                    if(entrancePassQueue.carsInQueue()<=40) {
+                    if(entrancePassQueue.carsInQueue() <= 40) {
                         entrancePassQueue.addCar(new Reserved());
                     }
                 }
@@ -360,7 +368,21 @@ public class SimulatorModel {
         return true;
     }
 
+    // RESERVATIE
+//    public boolean locationIsVip(Location location) {
+//        int row = location.getRow();
+//        int floor = location.getFloor();
+//        if(row < numberOfVipRows && floor < numberOfVipFloors) {
+//            return true;
+//        }
+//
+//        return false;
+//    }
+
     public Car getCarAt(Location location) {
+        if(location == null) {
+            return null;
+        }
         if (!locationIsValid(location)) {
             return null;
         }
@@ -377,10 +399,6 @@ public class SimulatorModel {
             car.setLocation(location);
             numberOfOpenSpots--;
 
-            if(car.getColor().equals(Color.blue)) {
-                numberReservedPlaces++;
-            }
-
             return true;
         }
         return false;
@@ -396,9 +414,6 @@ public class SimulatorModel {
         }
         cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
         car.setLocation(null);
-
-
-
         numberOfOpenSpots++;
         return car;
     }
@@ -417,6 +432,38 @@ public class SimulatorModel {
         return null;
     }
 
+    // RESERVATIE
+//    public Location getFirstFreeVipLocation() {
+//        for (int floor = 0; floor < getNumberOfVipFloors(); floor++) {
+//            for (int row = 0; row < getNumberOfVipRows(); row++) {
+//                for (int place = 0; place < getNumberOfPlaces(); place++) {
+//                    Location location = new Location(floor, row, place);
+//                    if (getCarAt(location) == null && locationIsVip(location)) {
+//                        return location;
+//                    }
+//                }
+//            }
+//        }
+//
+//        Location location = getFirstFreeLocation();
+//        return location;
+//    }
+
+    // RESERVATIE
+//    public void checkForReservation() {
+//        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+//            for (int row = 0; row < getNumberOfRows(); row++) {
+//                for (int place = 0; place < getNumberOfPlaces(); place++) {
+//                    Location location = new Location(floor, row, place);
+//                    Car car = getCarAt(location);
+//                    if (car != null && car.getColor() == Color.gray && (car.getStayMinutes() - car.getResMinutes()) > car.getMinutesLeft()) {
+//                        car.changeColor();
+//                    }
+//                }
+//            }
+//        }
+//    }
+
     public Car getFirstLeavingCar() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
@@ -433,6 +480,22 @@ public class SimulatorModel {
     }
 
 
+    public int totalNumberOfSpotsTaken() {
+        int amount = numberOfRows * numberOfFloors * numberOfPlaces;
+        return amount - numberOfOpenSpots;
+    }
+
+    public ArrayList<Integer> getWeekIncomes() {
+
+        return weekIncomes;
+    }
+
+    public BigDecimal getAverageParkingPrice() {
+        float round = getAverageTime().setScale(2, RoundingMode.DOWN).floatValue();
+        float result = round * 60 * 0.042f;
+        return round(result, 2);
+    }
+
 
     public int getNumberOfFloors() {
         return numberOfFloors;
@@ -441,6 +504,15 @@ public class SimulatorModel {
     public ArrayList<Float> getTimes() {
         return times;
     }
+    // RESERVATIE
+
+//    public int getNumberOfVipRows() {
+//        return numberOfVipRows;
+//    }
+//
+//    public int getNumberOfVipFloors() {
+//        return numberOfVipFloors;
+//    }
 
     public int getNumberOfRows() {
         return numberOfRows;
@@ -462,15 +534,7 @@ public class SimulatorModel {
         return numberOfCarsLeft;
     }
 
-    public BigDecimal getAverageParkingPrice() {
-        float round = getAverageTime().setScale(2, RoundingMode.DOWN).floatValue();
-        float result = round * 60 * 0.042f;
-        return round(result, 2);
-    }
-
-    public BigDecimal getRevenue() {
-        return round(revenue, 2);
-    }
+    public int getRevenue() { return revenue; }
 
     public int getNumberReservedPlaces() {
         return numberReservedPlaces;
@@ -480,14 +544,11 @@ public class SimulatorModel {
         return Time.getDate();
     }
 
-    public int totalNumberOfSpotsTaken() {
-        int amount = numberOfRows * numberOfFloors * numberOfPlaces;
-        return amount - numberOfOpenSpots;
-    }
-
     public int[] getWeeklyRevenue() {
         return weeklyRevenue;
     }
+
+    public int getNumberOfNormalParkedCars() { return numberOfNormalParkedCars; }
 
     public int getNumberOfParkedCars() {
         return numberOfParkedCars;
@@ -500,6 +561,20 @@ public class SimulatorModel {
     public int getNumberNormalCueuedCars() {
         return entranceCarQueue.carsInQueue();
     }
+    // RESERVATIE
+
+//    public CarQueue getEntranceCarQueue(){
+//        return entranceCarQueue;
+//    }
+//
+//
+//    public CarQueue getEntrancePassQueue() {
+//        return entrancePassQueue;
+//    }
+//
+//    public CarQueue getEntranceResQueue() {
+//        return entranceResQueue;
+//    }
 
     public Car[][][] getCars() {
         return cars;

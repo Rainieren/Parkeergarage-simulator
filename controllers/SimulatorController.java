@@ -24,18 +24,24 @@ public class SimulatorController extends AbstractController {
         return this.carParkView;
     }
 
-    public BigDecimal getRevenue() {
-        return this.simulatorModel.getRevenue();
+    public int getRevenue() {
+        return  this.simulatorModel.getRevenue();
     }
+//    public BigDecimal getRevenue() {
+//        return this.simulatorModel.getRevenue();
+//    }
 
     public void updateView() {
         this.carParkView.updateView();
+
     }
 
 
     @Override
     public void tick() {
         this.simulatorModel.handleExit();
+        this.simulatorModel.arrivalVariation();
+        this.simulatorModel.addWeekIncome();
     }
 
 
@@ -59,4 +65,6 @@ public class SimulatorController extends AbstractController {
     public int getNumberOfPlaces() {
         return this.simulatorModel.getNumberOfPlaces();
     }
+
+    public int getNumberOfPassCarsParked() { return this.simulatorModel.getNumberOfPassCarsParked(); }
 }

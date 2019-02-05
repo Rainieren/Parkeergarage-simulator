@@ -53,6 +53,14 @@ public class Time {
 
     public static int getDayRun() { return dayRun; }
 
+    public static boolean isEndOfWeek() {
+        if(getDay() == 6 && getHour() == 23 && getMinute() == 59)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public static String getTime() { return String.format("%02d:%02d", getHour(), getMinute()); }
 
     public static String getDate() { return String.format("%02d/%04d", getMonth(), getYear()); }
@@ -69,12 +77,10 @@ public class Time {
             hour -= 24;
             day++;
             dayRun++;
-            SimulatorModel.arrivalVariation();
         }
         while (day > 6) {
             day -= 7;
             week++;
-            SimulatorModel.eventMultiplier();
         } while (week > 4) {
             week -= 4;
             month++;

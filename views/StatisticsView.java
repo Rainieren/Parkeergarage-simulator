@@ -10,8 +10,6 @@ import java.awt.*;
 
 public class StatisticsView extends AbstractView {
 
-    public Image legendaImage;
-    public Dimension size;
     public JLabel statsTitel;
     public JLabel week;
     public JLabel date;
@@ -25,14 +23,13 @@ public class StatisticsView extends AbstractView {
     public JLabel amountOfCarsLeft;
     public JLabel weekRevenueLabel;
     public JLabel normalCarsInQueue;
+    public JLabel groote;
 
     private StatisticsController controller;
 
     public StatisticsView(StatisticsController controller) {
         addView(this);
         this.controller = controller;
-        size = new Dimension(0,0);
-
         JPanel statsPanel = new JPanel();
 
         BoxLayout layoutBox = new BoxLayout(statsPanel, BoxLayout.Y_AXIS);
@@ -42,7 +39,7 @@ public class StatisticsView extends AbstractView {
         statsTitel = new JLabel("Statistics:");
         statsTitel.setFont(getFont().deriveFont(28.0f));
         statsTitel.setForeground(Color.BLACK);
-        statsTitel.setBorder(new EmptyBorder(0,0,20,0));
+        statsTitel.setBorder(new EmptyBorder(0, 0, 20, 0));
 
         date = new JLabel("");
         date.setFont(getFont().deriveFont(18.0f));
@@ -91,20 +88,23 @@ public class StatisticsView extends AbstractView {
         normalCarsInQueue = new JLabel("");
         returnStylesLabel(normalCarsInQueue);
 
+        groote = new JLabel("");
+        returnStylesLabel(groote);
+
         statsPanel.add(statsTitel);
         statsPanel.add(date);
         statsPanel.add(week);
+
         statsPanel.add(revenue);
-        statsPanel.add(weekRevenueLabel);
         statsPanel.add(parkedCars);
-        statsPanel.add(parkedSubCars);
-        statsPanel.add(amountOfReservations);
+        statsPanel.add(amountOfCarsLeft);
+        statsPanel.add(amountAvailablePlaces);
         statsPanel.add(averageParkingTime);
         statsPanel.add(averageParkingPrice);
-        statsPanel.add(amountAvailablePlaces);
-        statsPanel.add(amountOfCarsLeft);
+        statsPanel.add(amountOfReservations);
         statsPanel.add(normalCarsInQueue);
-
+        statsPanel.add(parkedSubCars);
+        statsPanel.add(weekRevenueLabel);
 
         add(statsPanel);
 
@@ -123,60 +123,19 @@ public class StatisticsView extends AbstractView {
     }
 
     @Override
-    public void updateView() {
+    public void updateView () {
         this.date.setText("Date: " + this.controller.getDate());
         this.week.setText("Week: " + this.controller.getWeek());
         this.revenue.setText("Total revenue € " + this.controller.getRevenue());
         this.weekRevenueLabel.setText("Omzet per " + Time.getDayString() + ": €" + this.controller.getWeeklyRevenue()[Time.getDay()]);
-        this.parkedCars.setText("Total parked cars: " + this.controller.getAmountOfParkedCars());
+        this.parkedCars.setText("Total Parked cars: " + this.controller.getAmountOfParkedCars());
         this.amountOfCarsLeft.setText("Total cars left: " + this.controller.getTotalCarsLeft());
-        this.amountAvailablePlaces.setText("Available places: " + this.controller.getNumberOfOpenSlots());
-        this.parkedSubCars.setText("Total Parked subscribers: " + this.controller.getNumberOfParkedPassCars());
+        this.amountAvailablePlaces.setText("Available places: " + this.controller.getNumberOfOpenSlots() + "\n");
+        this.parkedSubCars.setText("Pass cars parked: " + this.controller.getNumberOfPassCarsParked() + "\n");
         this.averageParkingTime.setText("Average parking time: " + this.controller.getAverageTime() + "h");
         this.averageParkingPrice.setText("Average parking price: €" + this.controller.getAverageParkingPrice());
-        this.amountOfReservations.setText("Total Current reservations: " + this.controller.getNumberOfReservedPlaces());
-        this.normalCarsInQueue.setText("Normal cars in queue: " + this.controller.getNormalCarsInQueue());
-
-//        this.setLegendaImage(this.createImage(150,250));
-//        Graphics graphics = this.getLegendaImage().getGraphics();
-//
-//        this.drawPlace(graphics, 4, 4, Color.RED, "Reguliere auto");
-//        this.drawPlace(graphics, 4, 5, Color.BLUE, "Abbonement houder");
-//        this.drawPlace(graphics, 4, 6, Color.GREEN, "Gereserveerde plek");
-//        this.drawPlace(graphics, 4 ,7, Color.WHITE, "Lege plek");
-//        this.repaint();
+        this.amountOfReservations.setText("Current reservations: " + this.controller.getNumberOfReservedPlaces());
+        this.normalCarsInQueue.setText("Cars in queue: " + this.controller.getNormalCarsInQueue());
+        this.repaint();
     }
-
-//    @Override
-//    protected void paintComponent(Graphics g) {
-//        if (legendaImage == null) {
-//            return;
-//        }
-//
-//        Dimension currentSize = getSize();
-//        if (size.equals(currentSize)) {
-//            g.drawImage(legendaImage, 0, 0, null);
-//        }
-//        else {
-//            // Rescale the previous image.
-//            g.drawImage(legendaImage, 0, 0, currentSize.width, currentSize.height, null);
-//        }
-//    }
-//
-//    public Image getLegendaImage() {
-//        return this.legendaImage;
-//    }
-//
-//    public void setLegendaImage(Image image) {
-//        this.legendaImage = image;
-//    }
-//
-//    public void drawPlace(Graphics graphics, int x, int y, Color color, String text) {
-//        graphics.setColor(color);
-//        graphics.fillRect(x + 5, 60 + (y * 22) + 10, 24, 10);
-//        graphics.setColor(Color.black);
-//        graphics.setFont(new Font("Arial", Font.PLAIN, 10));
-//        graphics.drawString(text, x + 30 + 5, 55 + (y * 22) + 10 + 14);
-//
-//    }
 }

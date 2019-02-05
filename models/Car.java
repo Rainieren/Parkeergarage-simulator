@@ -9,14 +9,16 @@ public abstract class Car {
     private boolean isPaying;
     private boolean hasToPay;
     private int totalMinutes;
-    private static int multiplier = 1;
     private static int enterSpeed = 3; // number of cars that can enter per minute
     private static int paymentSpeed = 7; // number of cars that can pay per minute
     private static int exitSpeed = 5; // number of cars that can leave per minute
-    private static int weekDayArrivals = 100 * multiplier; // average number of arriving cars per hour
-    private static int weekendArrivals = 200 * multiplier; // average number of arriving cars per hour
-    private static int weekDayPassArrivals = 50 * multiplier; // average number of arriving cars per hour
-    private static int weekendPassArrivals = 5 * multiplier; // average number of arriving cars per hour
+    private static int weekDayArrivals = 100; // average number of arriving cars per hour
+    private static int weekendArrivals = 200; // average number of arriving cars per hour
+    private static int weekDayPassArrivals = 50; // average number of arriving cars per hour
+    private static int weekendPassArrivals = 5; // average number of arriving cars per hour
+    // RESERVATIE
+    private static int weekDayReservation = 30;
+    private static int weekendReservation = 80;
 
 
     /**
@@ -38,14 +40,13 @@ public abstract class Car {
         Car.weekendArrivals = weekendArrivals;
     }
 
-    public static void setWeekDayPassArrivals(int weekDayPassArrivals) {
-        Car.weekDayPassArrivals = weekDayPassArrivals;
-    }
+    public static void setWeekDayPassArrivals(int weekDayPassArrivals) { Car.weekDayPassArrivals = weekDayPassArrivals; }
 
-    public static void setWeekendPassArrivals(int weekendPassArrivals) {
-        Car.weekendPassArrivals = weekendPassArrivals;
-    }
+    public static void setWeekendPassArrivals(int weekendPassArrivals) { Car.weekendPassArrivals = weekendPassArrivals; }
 
+    public static void setWeekDayReservation(int weekDayReservation) { Car.weekDayReservation = weekDayReservation; }
+
+    public static void setWeekendReservation(int weekendReservation) { Car.weekendReservation = weekendReservation; }
 
     public static int getWeekendArrivals() {
         return weekendArrivals;
@@ -59,9 +60,18 @@ public abstract class Car {
         return weekendPassArrivals;
     }
 
-    public static void setMultiplier(int value) {
-        multiplier = value;
-    }
+    public static int getWeekDayReservation() { return weekDayReservation; }
+
+    public static int getWeekendReservation() { return weekendReservation; }
+
+    // RESERVATIE
+//    public static int getWeekDayReservation() {
+//        return weekDayReservation;
+//    }
+//
+//    public static int getWeekendReservation() {
+//        return weekendReservation;
+//    }
 
     public Location getLocation() {
         return location;
@@ -105,11 +115,12 @@ public abstract class Car {
     }
     
     public abstract Color getColor();
+
+    public abstract int getTypeOfCar();
+
     public static int getEnterSpeed() {
         return enterSpeed;
     }
-
-    public abstract int getTypeOfCar();
 
     public static int getPaymentSpeed() {
         return paymentSpeed;
@@ -118,5 +129,16 @@ public abstract class Car {
     public static int getExitSpeed() {
         return exitSpeed;
     }
+
+    // RESERVATIE
+//    public void changeColor(){};
+//
+//    public int getTotalMinuts() {
+//        return this.totalMinutes;
+//    }
+//
+//    public int getResMinutes(){ return getResMinutes();}
+//
+//    public int getStayMinutes() { return getStayMinutes();}
 
 }

@@ -29,13 +29,16 @@ public class StatisticsController extends AbstractController {
         return view;
     }
 
-    public BigDecimal getRevenue() {
+    public int getRevenue() {
         return this.simulatorModel.getRevenue();
     }
+//    public BigDecimal getRevenue() {
+//        return this.simulatorModel.getRevenue();
+//    }
 
     public int getAmountOfParkedCars() { return this.simulatorModel.totalNumberOfSpotsTaken(); }
 
-    public int getNumberOfParkedPassCars() { return this.simulatorModel.getNumberOfPassCarsParked(); }
+    public int getNumberOfPassCarsParked() { return this.simulatorModel.getNumberOfPassCarsParked(); }
 
     public BigDecimal getAverageTime() { return this.simulatorModel.getAverageTime(); }
 
@@ -53,7 +56,11 @@ public class StatisticsController extends AbstractController {
 
     public int[] getWeeklyRevenue() { return this.simulatorModel.getWeeklyRevenue(); }
 
+    public ArrayList<Integer> getWeekIncomes() { return this.simulatorModel.getWeekIncomes(); }
+
     public int getNormalCarsInQueue() { return this.simulatorModel.getNumberNormalCueuedCars(); }
+
+    public int getPassCarsParked() { return this.simulatorModel.getNumberOfPassCarsParked(); }
 
     @Override
     public void tick() {

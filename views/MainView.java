@@ -1,6 +1,7 @@
 package views;
 
 import controllers.*;
+import models.BarChart_AWT;
 import models.GraphModel;
 import models.SimulatorModel;
 import models.StatisticsModel;
@@ -17,8 +18,9 @@ public class MainView extends JFrame {
         SimulatorController simulatorController = new SimulatorController(simulatorModel, statisticsModel);
         StatisticsController statisticsController = new StatisticsController(simulatorModel, statisticsModel);
         PanelController panelController = new PanelController();
-        GraphController graphController = new GraphController(simulatorModel);
+        GraphController graphController = new GraphController(statisticsModel, graphModel, simulatorModel);
         TimerController timerController = new TimerController();
+
 
         Container contentPane = getContentPane();
 

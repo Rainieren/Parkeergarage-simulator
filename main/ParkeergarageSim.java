@@ -7,7 +7,7 @@ import views.MainView;
 
 public class ParkeergarageSim {
 
-    private static int tickPause = 100;
+    private static int tickPause = 5;
     private static int runSpeed = 1;
     private static boolean running = false;
 
