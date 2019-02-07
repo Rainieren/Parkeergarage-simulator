@@ -18,6 +18,7 @@ public class SimulatorModel {
     private ArrayList<Float> times = new ArrayList<Float>();
     private ArrayList<Integer> weekIncomes = new ArrayList<Integer>();
     private int[] weeklyRevenue;
+    private int dayIncome;
     private int currentDay = 0;
     private int numberOfFloors;
     private int numberOfRows;
@@ -71,6 +72,7 @@ public class SimulatorModel {
         carsEntering(entrancePassQueue, PASS);
         carsEntering(entranceCarQueue, AD_HOC);
         // carsEntering(entranceResQueue, RES);
+
     }
 
     public void handleExit(){
@@ -79,70 +81,129 @@ public class SimulatorModel {
         carsLeaving();
     }
 
+    public void setWeekdayArrivals(int amountOfNormalCars, int amountOfPassCars, int amountOfReservations) {
+        Car.setWeekDayArrivals(amountOfNormalCars);
+        Car.setWeekDayPassArrivals(amountOfPassCars);
+        Car.setWeekDayReservation(amountOfReservations);
+    }
+
+    public void setWeekendArrivals(int amountOfNormalCars, int amountOfPassCars, int amountOfReservations) {
+        Car.setWeekendArrivals(amountOfNormalCars);
+        Car.setWeekendPassArrivals(amountOfPassCars);
+        Car.setWeekendReservation(amountOfReservations);
+    }
+
     public void arrivalVariation() {
         // schedules.
 
-        if(Time.getHour() >= 22 || Time.getHour() <= 7) {
-            Car.setWeekDayArrivals(25);
-            Car.setWeekDayPassArrivals(8);
-            Car.setWeekDayReservation(5);
-        } else {
-            Car.setWeekDayArrivals(60);
-            Car.setWeekDayPassArrivals(40);
-            Car.setWeekDayReservation(30);
+        if(Time.getDay() >= 0 && Time.getDay() <= 4) {
+            if(Time.getDayString().equals("Donderdag")) {
+                switch (Time.getHour()) {
+                    case 6:
+                        setWeekdayArrivals(35, 20, 25);
+                        break;
+                    case 7:
+                        setWeekdayArrivals(135, 50, 30);
+                        break;
+                    case 8:
+                        setWeekdayArrivals(185,75,50);
+                        break;
+                    case 12:
+                        setWeekdayArrivals(200,75,50);
+                        break;
+                    case 19:
+                        setWeekdayArrivals(100, 35,15);
+                        break;
+                    case 20:
+                        setWeekdayArrivals(50, 15, 10);
+                        break;
+                    case 21:
+                        setWeekdayArrivals(25, 10,10);
+                        break;
+                    case 0:
+                        setWeekdayArrivals(18,10,0);
+                }
+            } else {
+                switch (Time.getHour()) {
+                    case 6:
+                        setWeekdayArrivals(35, 20, 25);
+                        break;
+                    case 7:
+                        setWeekdayArrivals(125, 50, 30);
+                        break;
+                    case 8:
+                        setWeekdayArrivals(175,75,50);
+                        break;
+                    case 12:
+                        setWeekdayArrivals(85,55,30);
+                        break;
+                    case 13:
+                        setWeekdayArrivals(150, 65,35);
+                        break;
+                    case 17:
+                        setWeekdayArrivals(45, 35, 25);
+                        break;
+                    case 21:
+                        setWeekdayArrivals(25, 25,0);
+                        break;
+                    case 0:
+                        setWeekdayArrivals(18,15,0);
+                        break;
+                }
+            }
         }
 
-        switch (Time.getDayString()) {
-            case "Maandag":
-
-                if((Time.getHour() >= 12) && (Time.getHour() <= 14)) {
-                    Car.setWeekDayArrivals(150);
-                    Car.setWeekDayPassArrivals(60);
-                    Car.setWeekDayReservation(40);
-                }
-
-                break;
-            case "Dinsdag":
-                if((Time.getHour() >= 12) && (Time.getHour() <= 14)) {
-                    Car.setWeekDayArrivals(150);
-                    Car.setWeekDayPassArrivals(60);
-                    Car.setWeekDayReservation(40);
-                }
-                break;
-            case "Woensdag":
-                if((Time.getHour() >= 12) && (Time.getHour() <= 14)) {
-                    Car.setWeekDayArrivals(150);
-                    Car.setWeekDayPassArrivals(60);
-                    Car.setWeekDayReservation(40);
-                }
-                break;
-            case "Donderdag":
-                if((Time.getHour() >= 11) && (Time.getHour() <= 18)) {
-                    Car.setWeekDayArrivals(160);
-                    Car.setWeekDayPassArrivals(70);
-                    Car.setWeekDayReservation(50);
-                }
-                break;
-            case "Vrijdag":
-                if((Time.getHour() >= 12) && (Time.getHour() <= 14)) {
-                    Car.setWeekDayArrivals(150);
-                    Car.setWeekDayPassArrivals(60);
-                    Car.setWeekDayReservation(40);
-                }
-                break;
-            case "Zaterdag":
-                Car.setWeekendArrivals(60);
-                Car.setWeekendPassArrivals(40);
-                Car.setWeekendReservation(20);
-                break;
-
-            case "Zondag":
-                Car.setWeekendArrivals(40);
-                Car.setWeekendPassArrivals(20);
-                Car.setWeekendReservation(10);
-                break;
+        if(Time.getDayString().equals("Zaterdag")) {
+            switch (Time.getHour()) {
+                case 6:
+                    setWeekendArrivals(35, 20, 25);
+                    break;
+                case 7:
+                    setWeekendArrivals(75, 45, 35);
+                    break;
+                case 8:
+                    setWeekendArrivals(125,55,35);
+                    break;
+                case 12:
+                    setWeekendArrivals(85,55,30);
+                    break;
+                case 13:
+                    setWeekendArrivals(125, 55,35);
+                    break;
+                case 17:
+                    setWeekendArrivals(35, 20, 20);
+                    break;
+                case 21:
+                    setWeekendArrivals(25, 25,0);
+                    break;
+                case 0:
+                    setWeekendArrivals(18,15,0);
+                    break;
+            }
         }
 
+        if(Time.getDayString().equals("Zondag")) {
+            switch (Time.getHour()) {
+                case 6:
+                    setWeekendArrivals(25, 20, 15);
+                    break;
+                case 7:
+                    setWeekendArrivals(35, 25, 25);
+                    break;
+                case 8:
+                    setWeekendArrivals(55,35,25);
+                    break;
+                case 17:
+                    setWeekendArrivals(35, 20, 20);
+                    break;
+                case 21:
+                    setWeekendArrivals(25, 25,0);
+                    break;
+                case 0:
+                    setWeekendArrivals(18,15,0);
+                    break;
+            }
+        }
     }
 
 
@@ -281,8 +342,14 @@ public class SimulatorModel {
                 total += money;
             }
             weekIncomes.add(total);
-            revenue += total;
-            System.out.println(revenue);
+//            revenue += total;
+        }
+    }
+
+    public void addDayIncome() {
+        if(currentDay == Time.getDay() && Time.getHour() == 23 && Time.getMinute() == 59) {
+            dayIncome += weeklyRevenue[Time.getDay()];
+            revenue += weeklyRevenue[Time.getDay()];
         }
     }
 
@@ -535,6 +602,8 @@ public class SimulatorModel {
     }
 
     public int getRevenue() { return revenue; }
+
+    public int getDayIncome() { return dayIncome; }
 
     public int getNumberReservedPlaces() {
         return numberReservedPlaces;

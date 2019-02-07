@@ -42,6 +42,7 @@ public class SimulatorController extends AbstractController {
         this.simulatorModel.handleExit();
         this.simulatorModel.arrivalVariation();
         this.simulatorModel.addWeekIncome();
+        this.simulatorModel.addDayIncome();
     }
 
 

@@ -54,4 +54,6 @@ public class GraphController extends AbstractController {
     public int getNumberOfCarsParked() { return this.simulatorModel.getNumberOfNormalParkedCars(); }
 
     public int getDaStacckss() { return this.simulatorModel.getRevenue(); }
+
+    public int getDayIncome() { return this.simulatorModel.getDayIncome(); }
 }

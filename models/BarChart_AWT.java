@@ -58,7 +58,7 @@ public class BarChart_AWT extends ApplicationFrame {
         this.graphController = graphController;
         JFreeChart barChart = ChartFactory.createBarChart(
                 chartTitle,
-                "Money earned",
+                "Amount of money earned",
                 "Amount",
                 createDataset(),
                 PlotOrientation.VERTICAL,
@@ -66,7 +66,7 @@ public class BarChart_AWT extends ApplicationFrame {
                 true,
                 false);
         JFreeChart pie = ChartFactory.createPieChart(
-                chartTitle,
+                "Amount of cars",
                 createPieDataset()
         );
 
@@ -90,6 +90,7 @@ public class BarChart_AWT extends ApplicationFrame {
         plottie.setSectionPaint(2, Color.yellow);
         plottie.setSectionPaint(3, Color.white);
         renderer.setSeriesPaint(0, Color.ORANGE);
+        renderer.setSeriesPaint(1, Color.red);
 
 
         renderer.setBarPainter(new StandardBarPainter());
